@@ -22,7 +22,8 @@
   "homepage": "https://github.com/joseokungu/cse341-books#readme",
   "description": "",
   "dependencies": {
-    "express": "^5.3.0"
+    "express": "^5.3.0",
+    "mongodb": "^7.7.0"
   },
   "devDependencies": {
     "eslint": "^10.13.0",
