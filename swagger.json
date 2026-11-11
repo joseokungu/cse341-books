@@ -26,11 +26,63 @@
             "description": "Unable to retrieve books"
           }
         }
+      },
+      "post": {
+        "summary": "Create a new book",
+        "tags": [
+          "Books"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "id",
+                  "authorId",
+                  "title",
+                  "publicationDate"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "example": "b4"
+                  },
+                  "authorId": {
+                    "type": "string",
+                    "example": "a1"
+                  },
+                  "title": {
+                    "type": "string",
+                    "example": "Example Book Title"
+                  },
+                  "publicationDate": {
+                    "type": "string",
+                    "format": "date",
+                    "example": "2026-01-15"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Book created successfully"
+          },
+          "400": {
+            "description": "Invalid fields, duplicate book ID, or author not found"
+          },
+          "500": {
+            "description": "Unable to create book"
+          }
+        }
       }
     },
     "/books/{id}": {
       "get": {
-        "summary": "Get one book by id",
+        "summary": "Get one book by ID",
         "tags": [
           "Books"
         ],
@@ -39,7 +91,7 @@
             "in": "path",
             "name": "id",
             "required": true,
-            "description": "The custom book id, such as b1",
+            "description": "The custom book ID, such as b1",
             "schema": {
               "type": "string"
             }
@@ -54,6 +106,95 @@
           },
           "500": {
             "description": "Unable to retrieve book"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update a book by ID",
+        "tags": [
+          "Books"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The custom book ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "authorId",
+                  "title",
+                  "publicationDate"
+                ],
+                "properties": {
+                  "authorId": {
+                    "type": "string",
+                    "example": "a2"
+                  },
+                  "title": {
+                    "type": "string",
+                    "example": "Updated Book Title"
+                  },
+                  "publicationDate": {
+                    "type": "string",
+                    "format": "date",
+                    "example": "2026-02-20"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Book updated successfully"
+          },
+          "400": {
+            "description": "Invalid fields or author not found"
+          },
+          "404": {
+            "description": "Book not found"
+          },
+          "500": {
+            "description": "Unable to update book"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a book by ID",
+        "tags": [
+          "Books"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The custom book ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Book deleted successfully"
+          },
+          "404": {
+            "description": "Book not found"
+          },
+          "500": {
+            "description": "Unable to delete book"
           }
         }
       }
@@ -114,7 +255,10 @@
             "description": "Author created"
           },
           "400": {
-            "description": "Missing required author fields or author ID already exists"
+            "description": "Missing required author fields"
+          },
+          "409": {
+            "description": "Author ID already exists"
           },
           "500": {
             "description": "Unable to create author"
@@ -136,7 +280,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The author ID."
+            "description": "The author ID"
           }
         ],
         "responses": {
@@ -164,7 +308,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The author ID."
+            "description": "The author ID"
           }
         ],
         "requestBody": {
@@ -198,7 +342,7 @@
             "description": "Author updated"
           },
           "400": {
-            "description": "Missing required author fields"
+            "description": "Missing or invalid author fields"
           },
           "404": {
             "description": "Author not found"
@@ -221,7 +365,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "The author ID."
+            "description": "The author ID"
           }
         ],
         "responses": {
@@ -232,7 +376,7 @@
             "description": "Author not found"
           },
           "409": {
-            "description": "Author cannot be deleted because they still have books"
+            "description": "Author cannot be deleted because books reference it"
           },
           "500": {
             "description": "Unable to delete author"
